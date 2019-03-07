@@ -63,7 +63,10 @@ class Fotografia inherits Obras{
 	method debeRestaurarse(){ return false}
 	
 	method acep(expo){
-		return expo.cantidadDeVistasEstablecidas()>= (cuantasPersonasLaVieron + 1000) 
+		return expo.cantidadDeVistasEstablecidas()>= (cuantasPersonasLaVieron + 1000) and
+		 self.col()
 		
 	}
+	method col(){return colores.any({p=>p==marron})
+		or colores.any({p=>p==verde})}
 }
