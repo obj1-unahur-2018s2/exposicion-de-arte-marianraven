@@ -1,0 +1,50 @@
+import colores.*
+import exposicion.*
+describe "expo"{
+	var juanCastagnino= new Artista()
+	var juanito = new Pintura()
+	var rosita=new Pintura()
+	var laFiesta=new Fotografia()
+	var personaEnUnaBotella= new Fotografia()
+fixture{
+	exposicion.registrarArtistasJurado("RaulSoldi")
+	juanCastagnino.maestro("RaulSoldi")
+    juanito.autor("horacioCoppola")
+    juanito. cuantasPersonasLaVieron(20000)
+    juanito.colores(#{azul,verde,rojo})
+    juanito.nivelDeDesgaste(240)
+    rosita.autor("juanCastagnino")
+    rosita. cuantasPersonasLaVieron(15000)
+    rosita.colores(#{amarillo,fucsia})
+    rosita.nivelDeDesgaste(80)
+    laFiesta.autor("horacioCoppola")
+    laFiesta. cuantasPersonasLaVieron(8000)
+    laFiesta.colores(#{rojo,marron,fucsia,naranja})
+    personaEnUnaBotella.autor("greteStern")
+    personaEnUnaBotella.colores(#{verde,amarillo})
+    personaEnUnaBotella. cuantasPersonasLaVieron(18000)
+    exposicion.registrarIngreso(juanito)
+    exposicion.registrarIngreso(rosita)
+    exposicion.registrarIngreso(laFiesta)
+}
+test "primera fase"{
+	assert.equals([juanito,rosita,laFiesta],exposicion.obras())
+}
+test "primera fase 1"{
+	assert.equals(["horacioCoppola","juanCastagnino","horacioCoppola"],exposicion.conjuntoDeAutores())
+}
+test "primera fase 2"{
+	
+	assert.equals(2,exposicion.cantidadDeObras("horacioCoppola"))
+}
+test"primera fase3"{
+	assert.equals(2,exposicion.masObras())
+}
+test"primera fase 4"{
+	assert.that(exposicion.esBrillante())
+}
+test "primera fase 5"{
+	exposicion.registrarIngreso( personaEnUnaBotella)
+	assert.equals(["horacioCoppola","juanCastagnino","horacioCoppola","greteStern"],exposicion.conjuntoDeAutores())
+}
+}
