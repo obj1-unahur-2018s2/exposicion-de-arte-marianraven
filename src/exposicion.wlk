@@ -6,7 +6,7 @@ object exposicion {
 	
 	method registrarArtistasJurado(artista){ jurado.add(artista)}
 	
-    method esInfluyente(artista){return jurado.any({artista.setMaestro()==obras.setMaestro()}) }//corregir
+    method esInfluyente(artista){return  jurado.any({p=>p.maestro()== artista})}
     
 	method registrarIngreso(obra){ obras.add(obra)}
 	
@@ -16,17 +16,31 @@ object exposicion {
 	
 	method conjuntoDeAutores(){return obras.map({p=>p.au()})}
 	
-	method cantidadDeObras(artista){ return obras.count({obras.autor()==artista.autor()})  }//corregir
+	method cantidadDeObras(artista){ return obras.count({p=>p.autor()==artista})  }
 	
 	method conjuntoDeObrasDeAutorInfluyente(){ return obras.map({p=>p.esInfluyente()})}
 	
-	method masObras(){ return obras.max({p=>p.autor()})}
+	method masObras(){ return obras.max({p=>p.autor()}).count()}
 	
 	method cantidadDeVistasEstablecidas(){ return cantidadDeVistasEstablecidas}
 	
-	method poseeLosColoresDeAceptacion(obra){}
+	method noSePermite(){return jurado== obras.autor()  }
 	
-	method esAceptada(){}
+	method noSePermite2(artista){ return   if(artista.esInfluyente()) obras.count({p=>p.autor()}).size()>1 else {} }
+	
+	method cumpleConLosRequisitos(obra){ return obra.estanLosColores() and obra.acep() }
+	method estaInhabilitada(artista){ return self.noSePermite()
+		                             + self.noSePermite2(artista)
+	}
+	method puedeFormarParte(artista,obra){return not self.estaInhabilitada(artista)
+		                              + self.cumpleConLosRequisitos(obra)
+	}
+	method incorporarObra(artista,obra){return if (not self.estaInhabilitada(artista)
+		                           +self.cumpleConLosRequisitos(obra)) {obra.registrarIngreso(obra)} else {
+		                           	throw new userException("no se incorpora a la expo")// no me acuerdo la palabra
+		                           }
+		                           
+	}
 }
 class Artista{
 	var property maestro
@@ -55,7 +69,7 @@ class Pintura inherits Obras{
 	method esRelevante(){ return cuantasPersonasLaVieron> 10000}
 	
 	method debeRestaurarse(){return  nivelDeDesgaste >=200}
-	method acep(expo){  return expo.cantidadDeVistasEstablecidas()>= cuantasPersonasLaVieron}
+	method acep(expo){  return expo.cantidadDeVistasEstablecidas()< cuantasPersonasLaVieron}
 }
 class Fotografia inherits Obras{
 	method esRelevante(){return self.cuantosColoresTiene()>3}
