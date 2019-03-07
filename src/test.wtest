@@ -8,6 +8,7 @@ describe "expo"{
 	var personaEnUnaBotella= new Fotografia()
 fixture{
 	exposicion.registrarArtistasJurado("RaulSoldi")
+	exposicion.registrarArtistasJurado("antonioBerni")
 	juanCastagnino.maestro("RaulSoldi")
     juanito.autor("horacioCoppola")
     juanito. cuantasPersonasLaVieron(20000)
@@ -46,5 +47,13 @@ test"primera fase 4"{
 test "primera fase 5"{
 	exposicion.registrarIngreso( personaEnUnaBotella)
 	assert.equals(["horacioCoppola","juanCastagnino","horacioCoppola","greteStern"],exposicion.conjuntoDeAutores())
+	assert.notThat(exposicion.esBrillante())
 }
+test"primeraFase 6"{
+	assert.that(exposicion.esInfluyente("juanCastagnino"))
+}
+test"segunda etapa"{
+	assert.that(juanito.estanLosColores())
+}
+
 }
